@@ -51,7 +51,6 @@ const ratesBoard = new RatesBoard();
   ratesBoard.getTheExchangeRate = function() {
     ApiConnector.getStocks(response => {
       if (response.success) {
-        console.log(1111);
         ratesBoard.clearTable();
         ratesBoard.fillTable(response.data);
       }
@@ -82,8 +81,8 @@ moneyManager.addMoneyCallback = data => ApiConnector.addMoney(data, checkAddMone
     if(response.success) {
       ProfileWidget.showProfile(response.data);
       moneyManager.setMessage(response.success, "Пополнение баланса прошло успешно!");                    
-    } else {
-      moneyManager.setMessage(response.success, "Баланс не пополнен!");    
+    } else {    
+      moneyManager.setMessage(response.success, response.error);    //Ошибку присылает сервер!
       }                                          
   }
 /*
@@ -101,7 +100,7 @@ moneyManager.conversionMoneyCallback = data => ApiConnector.convertMoney(data, c
       ProfileWidget.showProfile(response.data);
       moneyManager.setMessage(response.success, "Конвертирование валюты прошло успешно!"); 
     } else {
-      moneyManager.setMessage(response.success, "Конвертирование валюты не выполнено!");     
+      moneyManager.setMessage(response.success, response.error);     // Ошибку присылает сервер!
       }                                          
   }
 
@@ -120,7 +119,7 @@ moneyManager.sendMoneyCallback = data => ApiConnector.transferMoney(data, checkT
       moneyManager.updateUsersList(response.data);
       moneyManager.setMessage(response.success, "Перевод валюты выполнен успешно!");     
     } else {
-      moneyManager.setMessage(response.success, "Перевод валюты не выполнен!");   
+      moneyManager.setMessage(response.success, response.error);   // Ошибку присылает сервер!
       }                                       
   }
 
@@ -167,7 +166,7 @@ function checkAddUserToFavorites(response) {
     moneyManager.updateUsersList(response.data);
     favoritesWidget.setMessage(response.success, "Пользователь добавлен в список избранных!");
   } else {
-      favoritesWidget.setMessage(response.success, "Пользователь не добавлен! Заполните поле ID и ИМЯ!"); 
+      favoritesWidget.setMessage(response.success, response.error); // Ошибку присылает сервер!
     }
 }
 
@@ -188,7 +187,7 @@ favoritesWidget.removeUserCallback = data => ApiConnector.removeUserFromFavorite
       moneyManager.updateUsersList(response.data);
       favoritesWidget.setMessage(response.success, "Пользователь удален из списка избранных!");
     } else {
-        favoritesWidget.setMessage(response.success, "Пользователь не удален из списка избранных!"); 
+        favoritesWidget.setMessage(response.success, response.error); // Ошибку присылает сервер!
       }
   }
 
